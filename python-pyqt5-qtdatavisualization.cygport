@@ -1,0 +1,68 @@
+inherit python2 python3 qt5
+
+NAME="python-pyqt5-qtdatavisualization"
+VERSION=5.9
+RELEASE=1
+CATEGORY="Python"
+SUMMARY="Python QtDataVisualization bindings"
+DESCRIPTION="PyQt is a set of Python bindings for the Qt application
+framework and runs on all platforms supported by Qt. The bindings are
+implemented as a set of Python modules and contain over 300 classes and
+over 6,000 functions and methods."
+HOMEPAGE="http://www.riverbankcomputing.co.uk/software/pyqt/"
+SRC_URI="mirror://sourceforge/pyqt/PyQtDataVisualization_gpl-${VERSION}.tar.gz"
+SRC_DIR="PyQtDataVisualization_gpl-${VERSION}"
+PATCH_URI="
+	5.9-qmake-vars.patch
+	5.9-cygwin.patch
+"
+
+PKG_NAMES="python2-pyqt5-qtdatavisualization python3-pyqt5-qtdatavisualization ${NAME}-common ${NAME}-devel"
+python2_pyqt5_qtdatavisualization_REQUIRES="{NAME}-common"
+python2_pyqt5_qtdatavisualization_CONTENTS=${PYTHON2_SITELIB#/}
+python3_pyqt5_qtdatavisualization_REQUIRES="${NAME}-common"
+python3_pyqt5_qtdatavisualization_CONTENTS=${PYTHON3_SITELIB#/}
+python_pyqt5_qtdatavisualization_common_CONTENTS="
+	usr/share/doc/${NAME}
+	usr/share/qt5/qsci/
+"
+python_pyqt5_qtdatavisualization_devel_CONTENTS="usr/share/sip/PyQt5/QtDataVisualization/"
+
+DIFF_EXCLUDES="qmldir"
+
+src_compile() {
+	mkdir -p ${B}/py2
+	cd ${B}/py2
+	lndirs ${S}
+	${PYTHON2} ./configure.py \
+		--concatenate \
+		--destdir ${PYTHON2_SITELIB}/PyQt5 \
+		--qmake ${QT5_QMAKE} \
+		--sip /usr/bin/sip \
+		QMAKE_CFLAGS="${CFLAGS}" QMAKE_CXXFLAGS="${CXXFLAGS}" \
+		QMAKE_LIBS="${LIBPYTHON2}" STRIP=: \
+		|| error "configure.py failed"
+
+	cygmake
+
+	mkdir -p ${B}/py3
+	cd ${B}/py3
+	lndirs ${S}
+	${PYTHON3} ./configure.py \
+		--concatenate \
+		--destdir ${PYTHON3_SITELIB}/PyQt5 \
+		--qmake ${QT5_QMAKE} \
+		--sip /usr/bin/sip \
+		QMAKE_CFLAGS="${CFLAGS}" QMAKE_CXXFLAGS="${CXXFLAGS}" \
+		QMAKE_LIBS="${LIBPYTHON3}" STRIP=: \
+		|| error "configure.py failed"
+
+	cygmake
+}
+
+src_install() {
+	cd ${B}/py3
+	cyginstall INSTALL_ROOT=${D}
+	cd ${B}/py2
+	cyginstall INSTALL_ROOT=${D}
+}

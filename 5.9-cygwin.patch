@@ -1,0 +1,20 @@
+--- origsrc/PyQt3D_gpl-5.9/configure.py	2017-07-03 12:38:01.000000000 -0500
++++ src/PyQt3D_gpl-5.9/configure.py	2017-10-25 02:32:32.413766000 -0500
+@@ -1602,13 +1602,16 @@ win32 {
+     PY_MODULE = %s.pyd
+     target.files = %s.pyd
+     LIBS += -L%s
++} else:cygwin-* {
++    PY_MODULE = %s.dll
++    target.files = %s.dll
+ } else {
+     PY_MODULE = %s.so
+     target.files = %s.so
+ }
+ 
+ target.CONFIG = no_check_exist
+-''' % (mname, mname, quote(target_config.py_pylib_dir), mname, mname))
++''' % (mname, mname, quote(target_config.py_pylib_dir), mname, mname, mname, mname))
+ 
+     pro.write('''
+ target.path = %s

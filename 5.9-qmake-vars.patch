@@ -1,0 +1,32 @@
+--- origsrc/PyQt3D_gpl-5.9/configure.py	2017-07-03 12:38:01.000000000 -0500
++++ src/PyQt3D_gpl-5.9/configure.py	2017-10-25 02:32:32.413766000 -0500
+@@ -862,6 +862,7 @@ class _TargetConfiguration:
+         self.pyqt_version_str = ''
+         self.qmake = self._find_exe('qmake')
+         self.qmake_spec = ''
++        self.qmake_variables = []
+         self.qt_version = 0
+         self.qt_version_str = ''
+         self.sip = self._find_exe('sip5', 'sip')
+@@ -1707,6 +1708,8 @@ macx {
+             pro.write(' \\\n    %s' % s)
+     pro.write('\n')
+ 
++    pro.write('\n'.join(target_config.qmake_variables) + '\n')
++
+     pro.close()
+ 
+ 
+@@ -1864,11 +1867,7 @@ def _main(argv, pkg_config):
+ 
+     # Parse the command line.
+     p = _create_optparser(target_config, pkg_config)
+-    opts, args = p.parse_args()
+-
+-    if args:
+-        p.print_help()
+-        sys.exit(2)
++    opts, target_config.qmake_variables = p.parse_args()
+ 
+     target_config.apply_pre_options(opts)
+ 
