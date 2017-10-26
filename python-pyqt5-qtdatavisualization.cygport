@@ -18,7 +18,7 @@ PATCH_URI="
 "
 
 PKG_NAMES="python2-pyqt5-qtdatavisualization python3-pyqt5-qtdatavisualization ${NAME}-common ${NAME}-devel"
-python2_pyqt5_qtdatavisualization_REQUIRES="{NAME}-common"
+python2_pyqt5_qtdatavisualization_REQUIRES="${NAME}-common"
 python2_pyqt5_qtdatavisualization_CONTENTS=${PYTHON2_SITELIB#/}
 python3_pyqt5_qtdatavisualization_REQUIRES="${NAME}-common"
 python3_pyqt5_qtdatavisualization_CONTENTS=${PYTHON3_SITELIB#/}
