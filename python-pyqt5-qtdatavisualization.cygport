@@ -1,7 +1,7 @@
 inherit python2 python3 qt5
 
 NAME="python-pyqt5-qtdatavisualization"
-VERSION=5.9
+VERSION=5.9.2
 RELEASE=1
 CATEGORY="Python"
 SUMMARY="Python QtDataVisualization bindings"
